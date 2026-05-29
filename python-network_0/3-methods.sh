@@ -1,3 +1,3 @@
 #!/bin/bash
-# Display all HTTP methods the server of a given URL will accept.
-curl -sI "$1" | grep "Allow" | cut -d " " -f 2-
+# Script that sends a GET request with a header variable and displays the body
+curl -s -H "X-HolbertonSchool-User-Id: 98" "$1"

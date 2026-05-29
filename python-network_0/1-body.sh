@@ -1,3 +1,3 @@
 #!/bin/bash
-# Get the response body for a given URL for 200 status code responses.
-curl -sL "$1"
+# Script that sends a GET request and displays the body of a 200 status code response
+curl -s "$1"

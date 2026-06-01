@@ -1,3 +1,3 @@
 #!/bin/bash
-# Script that sends a GET request with a header and displays the body
-url="$1"; [[ $url =~ ^https?:// ]] || url="http://$url"; curl -s -H "X-HolbertonSchool-User-Id: 98" "$url"
+# Send a GET request to a given URL with a header variable.
+curl -sH "X-HolbertonSchool-User-Id: 98" "$1"

@@ -1,26 +1,19 @@
 #!/usr/bin/env python3
-"""Simple web server for testing network shell scripts."""
+"""
+Web server
+"""
+from flask import Flask, request
+app = Flask(__name__)
 
-from http.server import HTTPServer, BaseHTTPRequestHandler
+@app.route("/", strict_slashes=False)
+def index():
+    """
+    Root
+    """
+    if request.headers.get('X-HolbertonSchool-User-Id', "0") == "98":
+        return "OK"
+    else:
+        return "NOP"
 
-class TestHandler(BaseHTTPRequestHandler):
-    def do_GET(self):
-        """Handle GET requests with header validation."""
-        # Check for custom header
-        if self.headers.get('X-HolbertonSchool-User-Id') == '98':
-            self.send_response(200)
-            self.send_header('Content-type', 'text/plain')
-            self.end_headers()
-            self.wfile.write(b'OK')
-        else:
-            self.send_response(200)
-            self.send_header('Content-type', 'text/plain')
-            self.end_headers()
-            self.wfile.write(b'NO')
-    
-    def log_message(self, format, *args):
-        pass
-
-if __name__ == '__main__':
-    server = HTTPServer(('localhost', 8000), TestHandler)
-    server.serve_forever()
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5050)

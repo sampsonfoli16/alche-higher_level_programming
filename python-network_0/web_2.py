@@ -1,43 +1,51 @@
 #!/usr/bin/env python3
-"""Web server with 5 redirects and multiple status codes for testing."""
+"""
+Web server with five redirects and multiple status codes
+"""
+from flask import Flask, redirect
+app = Flask(__name__)
 
-from http.server import HTTPServer, BaseHTTPRequestHandler
+@app.route("/", strict_slashes=False)
+def index():
+    """
+    Root - redirect to /r1 with 301
+    """
+    return redirect("http://localhost:5050/r1", code=301)
 
-class TestHandler(BaseHTTPRequestHandler):
-    def do_GET(self):
-        """Handle GET requests with multiple redirects."""
-        if self.path == '/':
-            self.send_response(301)
-            self.send_header('Location', 'http://localhost:8000/r1')
-            self.end_headers()
-        elif self.path == '/r1':
-            self.send_response(302)
-            self.send_header('Location', 'http://localhost:8000/r2')
-            self.end_headers()
-        elif self.path == '/r2':
-            self.send_response(303)
-            self.send_header('Location', 'http://localhost:8000/r3')
-            self.end_headers()
-        elif self.path == '/r3':
-            self.send_response(304)
-            self.send_header('Location', 'http://localhost:8000/r4')
-            self.end_headers()
-        elif self.path == '/r4':
-            self.send_response(307)
-            self.send_header('Location', 'http://localhost:8000/r5')
-            self.end_headers()
-        elif self.path == '/r5':
-            self.send_response(200)
-            self.send_header('Content-type', 'text/plain')
-            self.end_headers()
-            self.wfile.write(b'OK')
-        else:
-            self.send_response(404)
-            self.end_headers()
-    
-    def log_message(self, format, *args):
-        pass
+@app.route("/r1", strict_slashes=False)
+def r1():
+    """
+    /r1 - redirect to /r2 with 302
+    """
+    return redirect("http://localhost:5050/r2", code=302)
 
-if __name__ == '__main__':
-    server = HTTPServer(('localhost', 8000), TestHandler)
-    server.serve_forever()
+@app.route("/r2", strict_slashes=False)
+def r2():
+    """
+    /r2 - redirect to /r3 with 303
+    """
+    return redirect("http://localhost:5050/r3", code=303)
+
+@app.route("/r3", strict_slashes=False)
+def r3():
+    """
+    /r3 - redirect to /r4 with 304
+    """
+    return redirect("http://localhost:5050/r4", code=304)
+
+@app.route("/r4", strict_slashes=False)
+def r4():
+    """
+    /r4 - redirect to /r5 with 307
+    """
+    return redirect("http://localhost:5050/r5", code=307)
+
+@app.route("/r5", strict_slashes=False)
+def r5():
+    """
+    /r5 - final destination
+    """
+    return "OK"
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5050)

@@ -10,7 +10,7 @@ def index():
     """
     Root
     """
-    if request.headers.get('X-HolbertonSchool-User-Id', "0") == "98":
+    if request.headers.get('X-School-User-Id', "0") == "98":
         return "OK"
     else:
         return "NOP"

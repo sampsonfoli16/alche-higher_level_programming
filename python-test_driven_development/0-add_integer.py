@@ -13,9 +13,17 @@ def add_integer(a, b=98):
     addition. Raises TypeError with specific messages when types are
     invalid.
     """
+    import math
+
     if not isinstance(a, (int, float)):
         raise TypeError('a must be an integer')
     if not isinstance(b, (int, float)):
+        raise TypeError('b must be an integer')
+
+    # Reject non-finite floats (NaN, inf) explicitly
+    if isinstance(a, float) and not math.isfinite(a):
+        raise TypeError('a must be an integer')
+    if isinstance(b, float) and not math.isfinite(b):
         raise TypeError('b must be an integer')
 
     return int(a) + int(b)

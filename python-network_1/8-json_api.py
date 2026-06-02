@@ -11,7 +11,7 @@ if __name__ == "__main__":
         print('No result')
         sys.exit(0)
 
-    response = requests.get('http://0.0.0.0:5000/search_user', params={'q': q})
+    response = requests.post('http://0.0.0.0:5000/search_user', data={'q': q})
     try:
         data = response.json()
     except ValueError:

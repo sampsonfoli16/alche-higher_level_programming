@@ -1,0 +1,11 @@
+>>> text_indentation = __import__('5-text_indentation').text_indentation
+>>> text_indentation('Hello. How are you?')
+Hello.
+
+How are you?
+
+>>> try:
+...     text_indentation(123)
+... except Exception as e:
+...     print(e)
+text must be a string

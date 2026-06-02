@@ -6,7 +6,10 @@ import sys
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
-        print("Usage: ./10-my_github.py <username> <password>", file=sys.stderr)
+        print(
+            "Usage: ./10-my_github.py <username> <password>",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
     username = sys.argv[1]

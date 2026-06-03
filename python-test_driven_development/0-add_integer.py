@@ -18,6 +18,13 @@ def add_integer(a, b=98):
     if not isinstance(b, (int, float)):
         raise TypeError('b must be an integer')
 
+    # Reject boolean values explicitly: booleans are subclasses of int
+    # in Python but should be treated as invalid for this function.
+    if isinstance(a, bool):
+        raise TypeError('a must be an integer')
+    if isinstance(b, bool):
+        raise TypeError('b must be an integer')
+
     # Cast floats to int using the built-in conversion and allow the
     # native exceptions (ValueError/OverflowError) to surface for
     # special float values like NaN and infinity — hidden tests expect

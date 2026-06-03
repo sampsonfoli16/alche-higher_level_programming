@@ -34,6 +34,11 @@ def text_indentation(text):
 
     result = result.rstrip('\n')
 
-    # Print each line stripped of leading/trailing spaces
-    for line in result.split('\n'):
-        print(line.strip())
+    # Print each line stripped of leading/trailing spaces without adding a
+    # trailing newline at the end of the output.
+    lines = result.split('\n')
+    for idx, line in enumerate(lines):
+        if idx == len(lines) - 1:
+            print(line.strip(), end='')
+        else:
+            print(line.strip())

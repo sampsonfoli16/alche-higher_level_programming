@@ -32,6 +32,8 @@ def text_indentation(text):
             continue
         i += 1
 
+    result = result.rstrip('\n')
+
     # Print each line stripped of leading/trailing spaces
     for line in result.split('\n'):
-        print(line.rstrip())
+        print(line.strip())

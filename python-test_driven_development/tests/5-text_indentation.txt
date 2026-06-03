@@ -1,7 +1,7 @@
 >>> text_indentation = __import__('5-text_indentation').text_indentation
 >>> text_indentation('Hello. How are you?')
 Hello.
-
+<BLANKLINE>
 How are you?
 
 >>> try:

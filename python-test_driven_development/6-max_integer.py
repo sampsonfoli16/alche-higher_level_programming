@@ -6,9 +6,11 @@ Function `max_integer(list=[])` returns the biggest integer in a list or
 """
 
 
-def max_integer(list=[]):
+def max_integer(list=None):
     """Return the max integer from `list` or None for empty list."""
-    if not list:
+    if list is None:
+        return None
+    if len(list) == 0:
         return None
 
     max_val = list[0]

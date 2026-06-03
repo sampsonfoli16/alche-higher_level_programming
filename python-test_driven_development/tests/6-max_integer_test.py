@@ -12,6 +12,12 @@ class TestMaxInteger(unittest.TestCase):
     def test_unordered(self):
         self.assertEqual(max_integer([2, 3, 1, 4]), 4)
 
+    def test_max_at_beginning(self):
+        self.assertEqual(max_integer([4, 2, 1, 3]), 4)
+
+    def test_max_in_middle(self):
+        self.assertEqual(max_integer([1, 4, 2, 3]), 4)
+
     def test_one(self):
         self.assertEqual(max_integer([7]), 7)
 

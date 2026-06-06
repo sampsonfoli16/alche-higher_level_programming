@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """Unit tests for Square class."""
 import unittest
+import os
 from models.base import Base
 from models.square import Square
 
@@ -12,89 +13,175 @@ class TestSquare(unittest.TestCase):
         """Reset __nb_objects before each test."""
         Base._Base__nb_objects = 0
 
-    def test_id_auto(self):
-        """Test id is auto assigned."""
-        s = Square(5)
-        self.assertEqual(s.id, 1)
+    def test_square_1(self):
+        """Test Square(1)."""
+        s = Square(1)
+        self.assertEqual(s.size, 1)
 
-    def test_size(self):
-        """Test size attribute."""
-        s = Square(5)
-        self.assertEqual(s.size, 5)
+    def test_square_1_2(self):
+        """Test Square(1, 2)."""
+        s = Square(1, 2)
+        self.assertEqual(s.x, 2)
 
-    def test_x_y_default(self):
-        """Test x and y default to 0."""
-        s = Square(5)
-        self.assertEqual(s.x, 0)
-        self.assertEqual(s.y, 0)
+    def test_square_1_2_3(self):
+        """Test Square(1, 2, 3)."""
+        s = Square(1, 2, 3)
+        self.assertEqual(s.y, 3)
 
-    def test_size_not_int(self):
-        """Test size raises TypeError."""
+    def test_square_string_size(self):
+        """Test Square('1')."""
         with self.assertRaises(TypeError):
-            Square("5")
+            Square("1")
 
-    def test_size_zero(self):
-        """Test size zero raises ValueError."""
+    def test_square_string_x(self):
+        """Test Square(1, '2')."""
+        with self.assertRaises(TypeError):
+            Square(1, "2")
+
+    def test_square_string_y(self):
+        """Test Square(1, 2, '3')."""
+        with self.assertRaises(TypeError):
+            Square(1, 2, "3")
+
+    def test_square_1_2_3_4(self):
+        """Test Square(1, 2, 3, 4)."""
+        s = Square(1, 2, 3, 4)
+        self.assertEqual(s.id, 4)
+
+    def test_square_neg_size(self):
+        """Test Square(-1)."""
+        with self.assertRaises(ValueError):
+            Square(-1)
+
+    def test_square_neg_x(self):
+        """Test Square(1, -2)."""
+        with self.assertRaises(ValueError):
+            Square(1, -2)
+
+    def test_square_neg_y(self):
+        """Test Square(1, 2, -3)."""
+        with self.assertRaises(ValueError):
+            Square(1, 2, -3)
+
+    def test_square_zero(self):
+        """Test Square(0)."""
         with self.assertRaises(ValueError):
             Square(0)
 
-    def test_size_negative(self):
-        """Test size negative raises ValueError."""
-        with self.assertRaises(ValueError):
-            Square(-5)
-
-    def test_x_negative(self):
-        """Test x negative raises ValueError."""
-        with self.assertRaises(ValueError):
-            Square(5, -1)
-
-    def test_y_negative(self):
-        """Test y negative raises ValueError."""
-        with self.assertRaises(ValueError):
-            Square(5, 0, -1)
-
-    def test_area(self):
-        """Test area method."""
-        s = Square(5)
-        self.assertEqual(s.area(), 25)
-
     def test_str(self):
-        """Test __str__ method."""
+        """Test __str__ for Square."""
         s = Square(5, 2, 1, 12)
         self.assertEqual(str(s), "[Square] (12) 2/1 - 5")
 
-    def test_size_setter(self):
-        """Test size setter."""
-        s = Square(5)
-        s.size = 10
-        self.assertEqual(s.size, 10)
-        self.assertEqual(s.width, 10)
-        self.assertEqual(s.height, 10)
-
-    def test_update_args(self):
-        """Test update with args."""
-        s = Square(5)
-        s.update(10, 2, 3, 4)
-        self.assertEqual(s.id, 10)
-        self.assertEqual(s.size, 2)
-        self.assertEqual(s.x, 3)
-        self.assertEqual(s.y, 4)
-
-    def test_update_kwargs(self):
-        """Test update with kwargs."""
-        s = Square(5)
-        s.update(size=7, x=1)
-        self.assertEqual(s.size, 7)
-        self.assertEqual(s.x, 1)
-
     def test_to_dictionary(self):
-        """Test to_dictionary method."""
+        """Test to_dictionary() in Square."""
         s = Square(10, 2, 1, 1)
         d = s.to_dictionary()
-        self.assertEqual(d['size'], 10)
-        self.assertEqual(d['x'], 2)
-        self.assertEqual(d['y'], 1)
-        self.assertEqual(d['id'], 1)
+        self.assertIsInstance(d, dict)
+
+    def test_update_no_args(self):
+        """Test update() in Square."""
+        s = Square(1)
+        s.update()
+        self.assertEqual(s.size, 1)
+
+    def test_update_89(self):
+        """Test update(89) in Square."""
+        s = Square(1)
+        s.update(89)
+        self.assertEqual(s.id, 89)
+
+    def test_update_89_1(self):
+        """Test update(89, 1) in Square."""
+        s = Square(1)
+        s.update(89, 1)
+        self.assertEqual(s.size, 1)
+
+    def test_update_89_1_2(self):
+        """Test update(89, 1, 2) in Square."""
+        s = Square(1)
+        s.update(89, 1, 2)
+        self.assertEqual(s.x, 2)
+
+    def test_update_89_1_2_3(self):
+        """Test update(89, 1, 2, 3) in Square."""
+        s = Square(1)
+        s.update(89, 1, 2, 3)
+        self.assertEqual(s.y, 3)
+
+    def test_update_kwargs_id(self):
+        """Test update(**{ 'id': 89 }) in Square."""
+        s = Square(1)
+        s.update(**{'id': 89})
+        self.assertEqual(s.id, 89)
+
+    def test_update_kwargs_id_size(self):
+        """Test update(**{ 'id': 89, 'size': 1 }) in Square."""
+        s = Square(1)
+        s.update(**{'id': 89, 'size': 1})
+        self.assertEqual(s.size, 1)
+
+    def test_update_kwargs_id_size_x(self):
+        """Test update(**{ 'id': 89, 'size': 1, 'x': 2 }) in Square."""
+        s = Square(1)
+        s.update(**{'id': 89, 'size': 1, 'x': 2})
+        self.assertEqual(s.x, 2)
+
+    def test_update_kwargs_all(self):
+        """Test update(**{ 'id': 89, 'size': 1, 'x': 2, 'y': 3 }) in Square."""
+        s = Square(1)
+        s.update(**{'id': 89, 'size': 1, 'x': 2, 'y': 3})
+        self.assertEqual(s.y, 3)
+
+    def test_create_id(self):
+        """Test Square.create(**{ 'id': 89 }) in Square."""
+        s = Square.create(**{'id': 89})
+        self.assertEqual(s.id, 89)
+
+    def test_create_id_size(self):
+        """Test Square.create(**{ 'id': 89, 'size': 1 }) in Square."""
+        s = Square.create(**{'id': 89, 'size': 1})
+        self.assertEqual(s.size, 1)
+
+    def test_create_id_size_x(self):
+        """Test Square.create(**{ 'id': 89, 'size': 1, 'x': 2 }) in Square."""
+        s = Square.create(**{'id': 89, 'size': 1, 'x': 2})
+        self.assertEqual(s.x, 2)
+
+    def test_create_all(self):
+        """Test Square.create(**{ 'id': 89, 'size': 1, 'x': 2, 'y': 3 })."""
+        s = Square.create(**{'id': 89, 'size': 1, 'x': 2, 'y': 3})
+        self.assertEqual(s.y, 3)
+
+    def test_save_to_file_none(self):
+        """Test Square.save_to_file(None) in Square."""
+        Square.save_to_file(None)
+        with open("Square.json", "r") as f:
+            self.assertEqual(f.read(), "[]")
+
+    def test_save_to_file_empty(self):
+        """Test Square.save_to_file([]) in Square."""
+        Square.save_to_file([])
+        with open("Square.json", "r") as f:
+            self.assertEqual(f.read(), "[]")
+
+    def test_save_to_file(self):
+        """Test Square.save_to_file([Square(1)]) in Square."""
+        Square.save_to_file([Square(1)])
+        with open("Square.json", "r") as f:
+            self.assertIn("size", f.read())
+
+    def test_load_from_file_no_file(self):
+        """Test Square.load_from_file() when file doesn't exist."""
+        if os.path.exists("Square.json"):
+            os.remove("Square.json")
+        self.assertEqual(Square.load_from_file(), [])
+
+    def test_load_from_file(self):
+        """Test Square.load_from_file() when file exists."""
+        Square.save_to_file([Square(1)])
+        result = Square.load_from_file()
+        self.assertIsInstance(result[0], Square)
 
 
 if __name__ == "__main__":

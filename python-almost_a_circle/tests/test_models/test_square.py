@@ -186,3 +186,23 @@ class TestSquare(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+    def test_to_dictionary_type(self):
+        """Test to_dictionary() returns dict in Square."""
+        s = Square(10, 2, 1)
+        d = s.to_dictionary()
+        self.assertEqual(type(d), dict)
+
+    def test_to_dictionary_keys(self):
+        """Test to_dictionary() has correct keys in Square."""
+        s = Square(10, 2, 1, 1)
+        d = s.to_dictionary()
+        self.assertIn('id', d)
+        self.assertIn('size', d)
+        self.assertIn('x', d)
+        self.assertIn('y', d)
+
+    def test_save_to_file_none_type(self):
+        """Test Square.save_to_file(None) creates file."""
+        Square.save_to_file(None)
+        self.assertTrue(os.path.exists("Square.json"))

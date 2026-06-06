@@ -279,3 +279,20 @@ if __name__ == "__main__":
         """Test Rectangle.save_to_file(None) creates file."""
         Rectangle.save_to_file(None)
         self.assertTrue(os.path.exists("Rectangle.json"))
+
+    def test_to_dictionary_values(self):
+        """Test to_dictionary() returns correct values in Rectangle."""
+        r = Rectangle(10, 2, 1, 9, 1)
+        d = r.to_dictionary()
+        self.assertEqual(d['width'], 10)
+        self.assertEqual(d['height'], 2)
+        self.assertEqual(d['x'], 1)
+        self.assertEqual(d['y'], 9)
+        self.assertEqual(d['id'], 1)
+
+    def test_save_to_file_none_content(self):
+        """Test Rectangle.save_to_file(None) writes empty list."""
+        Rectangle.save_to_file(None)
+        with open("Rectangle.json", "r") as f:
+            content = f.read()
+        self.assertEqual(content, "[]")

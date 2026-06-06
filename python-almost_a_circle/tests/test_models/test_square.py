@@ -206,3 +206,19 @@ if __name__ == "__main__":
         """Test Square.save_to_file(None) creates file."""
         Square.save_to_file(None)
         self.assertTrue(os.path.exists("Square.json"))
+
+    def test_to_dictionary_values(self):
+        """Test to_dictionary() returns correct values in Square."""
+        s = Square(10, 2, 1, 1)
+        d = s.to_dictionary()
+        self.assertEqual(d['size'], 10)
+        self.assertEqual(d['x'], 2)
+        self.assertEqual(d['y'], 1)
+        self.assertEqual(d['id'], 1)
+
+    def test_save_to_file_none_content(self):
+        """Test Square.save_to_file(None) writes empty list."""
+        Square.save_to_file(None)
+        with open("Square.json", "r") as f:
+            content = f.read()
+        self.assertEqual(content, "[]")
